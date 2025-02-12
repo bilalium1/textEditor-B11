@@ -5,7 +5,8 @@
 #include <vector>
 
 const int   WIDTH = 1280, HEIGHT = 720;
-const int   WORM_LENGTH=1000;
+const int   WORM_LENGTH=100;
+const bool  BORDERS=true;
 uint32_t    timer = 0;
 
 using namespace std;
@@ -74,10 +75,17 @@ int main( int argc, char *argv[] )
 
         // BOUNDS
 
-        if (rect.x+rect.w > WIDTH+rect.w) rect.x=0;
-        if (rect.x<0) rect.x=WIDTH-rect.w;
-        if (rect.y+rect.h > HEIGHT)rect.y=0;
-        if (rect.y<0) rect.y=HEIGHT-rect.h;
+        if (!BORDERS){
+            if (rect.x+rect.w > WIDTH)          rect.x=0;
+            if (rect.x<0)                       rect.x=WIDTH-rect.w;
+            if (rect.y+rect.h > HEIGHT)         rect.y=0;
+            if (rect.y<0)                       rect.y=HEIGHT-rect.h;
+        } else {
+            if (rect.x+rect.w > WIDTH)          rect.x=WIDTH-rect.w;
+            if (rect.x<0)                       rect.x=0;
+            if (rect.y+rect.h > HEIGHT)         rect.y=HEIGHT-rect.h;
+            if (rect.y<0)                       rect.y=0;
+        }
 
         // SET BACKGROUND
 
@@ -90,7 +98,7 @@ int main( int argc, char *argv[] )
             trail[i].x=crds_arr[i][0]+rect.w/4;
             trail[i].y=crds_arr[i][1]+rect.h/4;
 
-            SDL_SetRenderDrawColor(renderer, 50, 50, 255 - i, 255);
+            SDL_SetRenderDrawColor(renderer, 50, 50, 255 - float(i)*(255/float(WORM_LENGTH)), 255);
             SDL_RenderFillRect(renderer, &trail[i]);
         }
 
