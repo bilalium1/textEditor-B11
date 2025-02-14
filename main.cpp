@@ -6,8 +6,8 @@
 #include <math.h>
 
 const Uint16   WIDTH = 500 ,HEIGHT = 500;
-const Uint16   WORM_LENGTH=100;
-const bool  BORDERS=false;
+const Uint16   WORM_LENGTH=1000;
+const bool  BORDERS=true;
 uint32_t    timer = 0;
 
 using namespace std;
@@ -33,8 +33,8 @@ int main( int argc, char *argv[] )
     Uint8               speed=nor_speed;
 
     SDL_FRect           rect;
-    rect.h=20;
-    rect.w=20;
+    rect.h=10;
+    rect.w=10;
     rect.x=0;
     rect.y=0;
 
@@ -81,10 +81,17 @@ int main( int argc, char *argv[] )
         }
         crds_arr[0]={rect.x, rect.y};
 
-        if (state[79]) rect.x+=speed; // 79 is for the RIGHT arrow
-        if (state[80]) rect.x-=speed; // 80 is for the LEFT arrow
-        if (state[81]) rect.y+=speed; // 81 is for the DOWN arrow
-        if (state[82]) rect.y-=speed; // 82 is for the UP  arrow
+        //if (state[79]) rect.x+=speed; // 79 is for the RIGHT arrow
+        //if (state[80]) rect.x-=speed; // 80 is for the LEFT arrow
+        //if (state[81]) rect.y+=speed; // 81 is for the DOWN arrow
+        //if (state[82]) rect.y-=speed; // 82 is for the UP  arrow
+
+        float mouse_x,mouse_y;
+
+        SDL_GetMouseState(&mouse_x, &mouse_y);
+
+        rect.x=mouse_x;
+        rect.y=mouse_y;
 
         // BOUNDS
 
@@ -122,7 +129,7 @@ int main( int argc, char *argv[] )
         SDL_RenderFillRect(renderer, &rect);
 
         SDL_RenderPresent(renderer);
-        SDL_Delay(1);
+        //SDL_Delay(1);
 
         timer++;
     }
